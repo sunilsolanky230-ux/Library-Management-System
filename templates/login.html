@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ role.capitalize() }} Login | LibraX Library{% endblock %}
+
+{% block content %}
+<section class="auth-shell reveal">
+    <div class="auth-card">
+        <span class="eyebrow">{{ role.capitalize() }} Access</span>
+        <h1>Welcome back</h1>
+        <p>Enter the library portal to continue to your {{ role }} dashboard.</p>
+
+        <form method="POST" class="form">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email address" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <button class="btn primary full" type="submit">Login</button>
+        </form>
+
+        <p class="switch-text">
+            New {{ role }}?
+            <a href="{{ url_for('signup', role=role) }}">Create account</a>
+        </p>
+        <a class="back-link" href="{{ url_for('index') }}">← Back to home</a>
+    </div>
+</section>
+{% endblock %}

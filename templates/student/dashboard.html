@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard | LibraX{% endblock %}
+
+{% block content %}
+<section class="dashboard-head reveal">
+    <div>
+        <span class="eyebrow">Student Dashboard</span>
+        <h1>Hello, {{ session.get('name') }}</h1>
+        <p>Search books, send requests, and track your library history.</p>
+    </div>
+</section>
+
+<section class="stats-grid reveal delay-1">
+    <div class="stat-card"><span>Pending</span><strong>{{ stats.pending }}</strong></div>
+    <div class="stat-card"><span>Issued</span><strong>{{ stats.issued }}</strong></div>
+    <div class="stat-card"><span>Returned</span><strong>{{ stats.returned }}</strong></div>
+</section>
+
+<section class="panel reveal">
+    <div class="panel-title">
+        <h2>Available Books</h2>
+        <span>{{ books|length }} result(s)</span>
+    </div>
+    <form class="search-form" method="GET">
+        <input type="search" name="q" value="{{ query }}" placeholder="Search by title, author, category, or ISBN">
+        <button class="btn secondary" type="submit">Search</button>
+        <a class="btn ghost" href="{{ url_for('student_dashboard') }}">Reset</a>
+    </form>
+
+    <div class="book-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="book-top">
+                <span>{{ book.category }}</span>
+                <strong>{{ book.available_copies }}/{{ book.total_copies }}</strong>
+            </div>
+            <h3>{{ book.title }}</h3>
+            <p>{{ book.author }}</p>
+            <div class="book-meta">
+                <span>ISBN: {{ book.isbn }}</span>
+                <span>Shelf: {{ book.shelf_no }}</span>
+            </div>
+            {% if book.id in active_book_ids %}
+                <button class="btn ghost full" disabled>Already Requested/Issued</button>
+            {% elif book.available_copies <= 0 %}
+                <button class="btn ghost full" disabled>Not Available</button>
+            {% else %}
+                <form method="POST" action="{{ url_for('request_book', book_id=book.id) }}">
+                    <button class="btn primary full" type="submit">Request Book</button>
+                </form>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="empty">No books found.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel reveal">
+    <div class="panel-title">
+        <h2>My Library History</h2>
+        <span>{{ transactions|length }} record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Status</th>
+                    <th>Requested</th>
+                    <th>Issued</th>
+                    <th>Returned</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in transactions %}
+                <tr>
+                    <td><strong>{{ item.title }}</strong><small>{{ item.author }}</small></td>
+                    <td><span class="status-pill {{ item.status }}">{{ item.status }}</span></td>
+                    <td>{{ item.requested_at or '-' }}</td>
+                    <td>{{ item.issued_at or '-' }}</td>
+                    <td>{{ item.returned_at or '-' }}</td>
+                    <td>{{ item.remarks or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="empty">No history yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

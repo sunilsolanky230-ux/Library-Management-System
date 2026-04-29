@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | LibraX{% endblock %}
+
+{% block content %}
+<section class="dashboard-head reveal">
+    <div>
+        <span class="eyebrow">Admin Dashboard</span>
+        <h1>Hello, {{ session.get('name') }}</h1>
+        <p>Manage library operations, book requests, returns, and students.</p>
+    </div>
+    <a class="btn primary" href="{{ url_for('add_book') }}">+ Add Book</a>
+</section>
+
+<section class="stats-grid reveal delay-1">
+    <div class="stat-card"><span>Total Books</span><strong>{{ stats.books }}</strong></div>
+    <div class="stat-card"><span>Students</span><strong>{{ stats.students }}</strong></div>
+    <div class="stat-card"><span>Pending Requests</span><strong>{{ stats.pending }}</strong></div>
+    <div class="stat-card"><span>Issued Books</span><strong>{{ stats.issued }}</strong></div>
+</section>
+
+<section class="panel-stack">
+    <div class="panel reveal">
+        <div class="panel-title">
+            <h2>Pending Requests</h2>
+            <span>{{ pending_requests|length }} request(s)</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Available</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in pending_requests %}
+                    <tr>
+                        <td><strong>{{ req.student_name }}</strong><small>{{ req.student_email }}</small></td>
+                        <td>{{ req.title }}<small>{{ req.author }}</small></td>
+                        <td>{{ req.available_copies }}</td>
+                        <td class="action-row">
+                            <form method="POST" action="{{ url_for('handle_request', transaction_id=req.id, action='approve') }}">
+                                <button class="btn success tiny" type="submit">Approve</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('handle_request', transaction_id=req.id, action='reject') }}">
+                                <button class="btn danger tiny" type="submit">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="empty">No pending requests.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel reveal delay-1">
+        <div class="panel-title">
+            <h2>Issued Books</h2>
+            <span>{{ issued_books|length }} active</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Issued At</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in issued_books %}
+                    <tr>
+                        <td><strong>{{ item.student_name }}</strong><small>{{ item.student_email }}</small></td>
+                        <td>{{ item.title }}<small>{{ item.author }}</small></td>
+                        <td>{{ item.issued_at or '-' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('mark_returned', transaction_id=item.id) }}">
+                                <button class="btn secondary tiny" type="submit">Mark Returned</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="empty">No issued books.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="panel reveal">
+    <div class="panel-title">
+        <h2>Recent Activity</h2>
+        <a href="{{ url_for('admin_books') }}">Manage books →</a>
+    </div>
+    <div class="activity-list">
+        {% for item in recent_activity %}
+        <div class="activity-item">
+            <span class="status-pill {{ item.status }}">{{ item.status }}</span>
+            <div>
+                <strong>{{ item.student_name }}</strong>
+                <p>{{ item.title }} • Requested: {{ item.requested_at }}</p>
+            </div>
+        </div>
+        {% else %}
+        <p class="empty">No activity yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

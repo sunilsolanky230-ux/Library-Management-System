@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ role.capitalize() }} Signup | LibraX Library{% endblock %}
+
+{% block content %}
+<section class="auth-shell reveal">
+    <div class="auth-card large">
+        <span class="eyebrow">Create {{ role.capitalize() }} Account</span>
+        <h1>Join the library</h1>
+        <p>Create your {{ role }} profile and start using the library system.</p>
+
+        <form method="POST" class="form">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter full name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email address" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Minimum 6 characters" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" placeholder="Re-enter password" required>
+
+            <button class="btn primary full" type="submit">Create Account</button>
+        </form>
+
+        <p class="switch-text">
+            Already have an account?
+            <a href="{{ url_for('login', role=role) }}">Login here</a>
+        </p>
+        <a class="back-link" href="{{ url_for('index') }}">← Back to home</a>
+    </div>
+</section>
+{% endblock %}

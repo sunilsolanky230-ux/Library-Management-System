@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Students | LibraX{% endblock %}
+
+{% block content %}
+<section class="dashboard-head reveal">
+    <div>
+        <span class="eyebrow">Students</span>
+        <h1>Registered Students</h1>
+        <p>View student accounts and their request activity.</p>
+    </div>
+</section>
+
+<section class="panel reveal">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Total Requests</th>
+                    <th>Active Issued</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td><strong>{{ student.name }}</strong></td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.total_requests or 0 }}</td>
+                    <td>{{ student.active_issued or 0 }}</td>
+                    <td>{{ student.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="empty">No students registered yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

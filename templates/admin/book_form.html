@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add Book' if mode == 'add' else 'Edit Book' }} | LibraX{% endblock %}
+
+{% block content %}
+<section class="auth-shell reveal">
+    <div class="auth-card wide">
+        <span class="eyebrow">Inventory</span>
+        <h1>{{ 'Add New Book' if mode == 'add' else 'Edit Book' }}</h1>
+        <p>{{ 'Enter book details to add it to the library.' if mode == 'add' else 'Update book information carefully.' }}</p>
+
+        <form method="POST" class="form grid-form">
+            <div>
+                <label>Book Title</label>
+                <input type="text" name="title" value="{{ book.title if book else '' }}" placeholder="Enter book title" required>
+            </div>
+            <div>
+                <label>Author</label>
+                <input type="text" name="author" value="{{ book.author if book else '' }}" placeholder="Enter author name" required>
+            </div>
+            <div>
+                <label>Category</label>
+                <input type="text" name="category" value="{{ book.category if book else '' }}" placeholder="Programming, DSA, AI..." required>
+            </div>
+            <div>
+                <label>ISBN</label>
+                <input type="text" name="isbn" value="{{ book.isbn if book else '' }}" placeholder="Unique ISBN/code" required>
+            </div>
+            <div>
+                <label>Shelf Number</label>
+                <input type="text" name="shelf_no" value="{{ book.shelf_no if book else 'A-01' }}" placeholder="A-01">
+            </div>
+            <div>
+                <label>Total Copies</label>
+                <input type="number" min="1" name="total_copies" value="{{ book.total_copies if book else 1 }}" required>
+            </div>
+            <button class="btn primary full span-2" type="submit">{{ 'Add Book' if mode == 'add' else 'Update Book' }}</button>
+        </form>
+
+        <a class="back-link" href="{{ url_for('admin_books') }}">← Back to books</a>
+    </div>
+</section>
+{% endblock %}

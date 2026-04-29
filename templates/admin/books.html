@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Manage Books | LibraX{% endblock %}
+
+{% block content %}
+<section class="dashboard-head reveal">
+    <div>
+        <span class="eyebrow">Book Inventory</span>
+        <h1>Manage Books</h1>
+        <p>Add, update, search, and maintain available library stock.</p>
+    </div>
+    <a class="btn primary" href="{{ url_for('add_book') }}">+ Add Book</a>
+</section>
+
+<section class="panel reveal">
+    <form class="search-form" method="GET">
+        <input type="search" name="q" value="{{ query }}" placeholder="Search by title, author, category, ISBN, or shelf">
+        <button class="btn secondary" type="submit">Search</button>
+        <a class="btn ghost" href="{{ url_for('admin_books') }}">Reset</a>
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Category</th>
+                    <th>ISBN</th>
+                    <th>Shelf</th>
+                    <th>Copies</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><strong>{{ book.title }}</strong><small>{{ book.author }}</small></td>
+                    <td>{{ book.category }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.shelf_no }}</td>
+                    <td>{{ book.available_copies }}/{{ book.total_copies }}</td>
+                    <td class="action-row">
+                        <a class="btn secondary tiny" href="{{ url_for('edit_book', book_id=book.id) }}">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" onsubmit="return confirm('Delete this book?')">
+                            <button class="btn danger tiny" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="empty">No books found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

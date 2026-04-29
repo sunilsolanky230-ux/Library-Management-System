@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}LibraX Library | Library Management System{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content reveal">
+        <span class="eyebrow">Elegant Library Experience</span>
+        <h1>Bring your shelves, readers, and borrowing workflow into one classic library dashboard.</h1>
+        <p>
+            LibraX Library is a refined Flask-based library management system with separate admin and student access,
+            smooth borrowing workflows, inventory tracking, and a warm interface inspired by books, reading rooms,
+            and premium library interiors.
+        </p>
+        <div class="hero-actions">
+            <a class="btn primary" href="{{ url_for('login', role='admin') }}">Admin Login</a>
+            <a class="btn secondary" href="{{ url_for('login', role='student') }}">Student Login</a>
+        </div>
+        <!-- <div class="quick-note">
+            Default admin access: <strong>admin@library.com</strong> / <strong>admin123</strong>
+        </div> -->
+    </div>
+
+    <div class="hero-card reveal delay-1">
+        <div class="card-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+        </div>
+        <div class="analytics-card">
+            <p>Reading Room Overview</p>
+            <h2>8+</h2>
+            <span>Curated starter books available</span>
+        </div>
+        <div class="mini-grid">
+            <div><strong>Catalog</strong><span>Shelf Tracking</span></div>
+            <div><strong>Readers</strong><span>Student Access</span></div>
+            <div><strong>Borrowing</strong><span>Approval Flow</span></div>
+            <div><strong>History</strong><span>Issue Records</span></div>
+        </div>
+    </div>
+</section>
+
+<section id="roles" class="role-section">
+    <div class="section-heading reveal">
+        <span class="eyebrow">Choose Portal</span>
+        <h2>Dedicated spaces for librarians and readers</h2>
+    </div>
+
+    <div class="role-grid">
+        <div class="role-card reveal">
+            <div class="role-icon">🏛</div>
+            <h3>Admin Portal</h3>
+            <p>Add books, organize shelves, approve requests, and manage returns with ease.</p>
+            <div class="card-actions">
+                <a class="btn primary full" href="{{ url_for('login', role='admin') }}">Login as Admin</a>
+                <a class="btn ghost full" href="{{ url_for('signup', role='admin') }}">Create Admin Account</a>
+            </div>
+        </div>
+
+        <div class="role-card reveal delay-1">
+            <div class="role-icon">🎓</div>
+            <h3>Student Portal</h3>
+            <p>Explore the catalog, request books, and monitor your borrowing history.</p>
+            <div class="card-actions">
+                <a class="btn secondary full" href="{{ url_for('login', role='student') }}">Login as Student</a>
+                <a class="btn ghost full" href="{{ url_for('signup', role='student') }}">Create Student Account</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="features-grid">
+    <div class="feature-card reveal">
+        <h3>Catalog & Shelves</h3>
+        <p>Track title, author, category, ISBN, shelf number, total copies, and live availability.</p>
+    </div>
+    <div class="feature-card reveal delay-1">
+        <h3>Borrowing Workflow</h3>
+        <p>Students request titles while admins approve, reject, issue, and close returns smoothly.</p>
+    </div>
+    <div class="feature-card reveal delay-2">
+        <h3>Library-Themed UI</h3>
+        <p>A warm reading-room aesthetic with polished cards, wooden tones, and elegant typography.</p>
+    </div>
+</section>
+{% endblock %}
